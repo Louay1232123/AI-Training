@@ -1,0 +1,15 @@
+{
+  "name": "cricket-polls",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cricket match polling — channel-agnostic API with a mobile-first web scoreboard",
+  "scripts": {
+    "setup": "npm install --prefix backend && npm install --prefix web",
+    "dev:api": "npm run dev --prefix backend",
+    "dev:web": "npm run dev --prefix web",
+    "seed": "npm run seed --prefix backend",
+    "test": "npm test --prefix backend",
+    "build": "npm run build --prefix web",
+    "start": "npm start --prefix backend"
+  }
+}
