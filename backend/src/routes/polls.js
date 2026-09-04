@@ -41,10 +41,12 @@ pollsRouter.get('/polls/history', (req, res) => {
   const offset = Number.parseInt(req.query.offset ?? '0', 10) || 0;
   const history = polls.getPollHistory({ limit, offset });
   res.json({
-    polls: history.map((poll) => ({
-      ...poll,
-      ...polls.getResults(poll.id),
-    })),
+    // Flattened, and the poll is not repeated inside its own results -- this
+    // list is the biggest payload the app fetches on a weak connection.
+    polls: history.map((poll) => {
+      const { total_votes, votes_by_channel, results } = polls.getResults(poll.id);
+      return { ...poll, total_votes, votes_by_channel, results };
+    }),
   });
 });
 

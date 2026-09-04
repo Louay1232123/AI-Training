@@ -94,15 +94,17 @@ export function useLive({ fetcher, topic, fromMessage }) {
     };
   }, [topic, refresh]);
 
-  // Fallback refetch. Only this timer depends on the socket state, so a
-  // reconnect just changes the cadence.
+  // Fallback refetch. Only this timer depends on the connection state, so a
+  // reconnect just changes the cadence rather than restarting anything.
+  //
+  // The relaxed cadence applies only while the socket is up AND fetches are
+  // working: once a refresh has failed we go back to 3s, because a live socket
+  // is no proof the API is reachable (and it makes recovery quick).
   useEffect(() => {
-    const interval = setInterval(
-      refresh,
-      socketStatus === 'open' ? POLL_MS_WHEN_CONNECTED : POLL_MS,
-    );
+    const healthy = socketStatus === 'open' && !stale;
+    const interval = setInterval(refresh, healthy ? POLL_MS_WHEN_CONNECTED : POLL_MS);
     return () => clearInterval(interval);
-  }, [refresh, socketStatus]);
+  }, [refresh, socketStatus, stale]);
 
   return { data, error, stale, loading, refresh, setData };
 }
