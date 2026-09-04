@@ -1,0 +1,79 @@
+@import 'tailwindcss';
+
+/*
+  Sport-scoreboard palette: dark stadium-screen ground, one hot accent for the
+  ball/live state, and a cool accent for the crowd's pick. Kept deliberately
+  small so every screen reads as the same board.
+*/
+@theme {
+  --color-pitch-950: #070b0f;
+  --color-pitch-900: #0a0f14;
+  --color-pitch-800: #111a22;
+  --color-pitch-700: #1a2733;
+  --color-pitch-600: #24343f;
+  --color-pitch-500: #35495c; /* non-leading bars: readable at arm's length */
+
+  --color-chalk: #f2f7fa;
+  --color-chalk-dim: #93a6b4;
+
+  --color-strike-500: #ffb020; /* live / leading */
+  --color-strike-600: #e09000;
+  --color-crowd-500: #21c8a4; /* your pick / confirmed */
+  --color-crowd-600: #12a487;
+  --color-out-500: #ff5a5f; /* closed / errors */
+
+  --font-display: 'Barlow Condensed', 'Arial Narrow', system-ui, sans-serif;
+
+  --animate-rise: rise 0.35s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+html {
+  background-color: var(--color-pitch-950);
+  /* Never bounce the board around on a phone. */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--color-chalk);
+  background-color: var(--color-pitch-950);
+  font-family:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  /* Scoreboard numbers must not jitter as they tick up. */
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: none;
+}
+
+/* Big tap targets everywhere: nothing interactive is smaller than a thumb. */
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Keyboard focus stays obvious against the dark ground. */
+:focus-visible {
+  outline: 3px solid var(--color-strike-500);
+  outline-offset: 2px;
+}
