@@ -1,0 +1,11 @@
+{
+  "name": "cricket-plans-n8n-sync",
+  "version": "1.0.0",
+  "description": "Cricket Plans app -> n8n webhook sync (attachment upload + plan saved)",
+  "type": "module",
+  "main": "n8nPlanSync.js",
+  "private": true,
+  "scripts": {
+    "test": "node --test *.test.mjs"
+  }
+}
